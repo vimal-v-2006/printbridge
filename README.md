@@ -83,6 +83,28 @@ npm --version
 
 This PC acts as the **host PC**.
 
+### Important
+
+On the **host Windows PC**, first open **PowerShell as Administrator**.
+
+This is needed for firewall and port forwarding commands.
+
+Run these commands on the **host PC**:
+
+```powershell
+netsh interface portproxy add v4tov4 listenaddress=0.0.0.0 listenport=4000 connectaddress=172.31.248.79 connectport=4000
+```
+
+```powershell
+netsh advfirewall firewall add rule name="PrintBridge 4000" dir=in action=allow protocol=TCP localport=4000
+```
+
+```powershell
+netsh interface portproxy show all
+```
+
+> If your backend is not running inside WSL, you may not need the `portproxy` command. The firewall rule is still useful.
+
 ### Run the host
 
 ```powershell
@@ -144,28 +166,6 @@ node --version
 ```powershell
 npm --version
 ```
-
-### Important
-
-On the **host Windows PC**, first open **PowerShell as Administrator**.
-
-This is needed for firewall and port forwarding commands.
-
-Run these commands on the **host PC**:
-
-```powershell
-netsh interface portproxy add v4tov4 listenaddress=0.0.0.0 listenport=4000 connectaddress=172.31.248.79 connectport=4000
-```
-
-```powershell
-netsh advfirewall firewall add rule name="PrintBridge 4000" dir=in action=allow protocol=TCP localport=4000
-```
-
-```powershell
-netsh interface portproxy show all
-```
-
-> If your backend is not running inside WSL, you may not need the `portproxy` command. The firewall rule is still useful.
 
 ### Run the printer node
 
