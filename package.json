@@ -1,0 +1,17 @@
+{
+  "name": "printbridge",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "shared",
+    "backend",
+    "agent",
+    "frontend"
+  ],
+  "scripts": {
+    "build": "npm run build -w shared && npm run build -w backend && npm run build -w agent && npm run build -w frontend",
+    "dev:backend": "npm run dev -w backend",
+    "dev:agent": "npm run dev -w agent",
+    "dev:frontend": "npm run dev -w frontend"
+  }
+}
