@@ -108,7 +108,11 @@ netsh interface portproxy show all
 ### Run the host
 
 ```powershell
-cd C:\Users\Public\printbridge
+git clone https://github.com/vimal-v-2006/printbridge
+```
+
+```powershell
+cd printbridge
 ```
 
 ```powershell
@@ -126,7 +130,7 @@ npm run dev:backend
 Open a second terminal in the same folder:
 
 ```powershell
-cd C:\Users\Public\printbridge
+cd printbridge
 ```
 
 ```powershell
@@ -170,7 +174,11 @@ npm --version
 ### Run the printer node
 
 ```powershell
-cd C:\Users\Public\printbridge
+git clone https://github.com/vimal-v-2006/printbridge
+```
+
+```powershell
+cd printbridge
 ```
 
 ```powershell
