@@ -191,7 +191,7 @@ npm run dev:agent
 - starts the Windows print agent
 - automatically sends the machine details the backend needs, such as host identity and local agent info
 - automatically discovers printers installed on that PC
-- automatically tries to connect to the PrintBridge backend on the local network
+- automatically tries to discover and connect to the PrintBridge backend on the local network
 - registers that PC as a printer node
 - makes its printers available inside the web UI
 
@@ -215,7 +215,7 @@ The printer-host PC will receive the job and print it.
 
 - PrintBridge is designed for **local network use only**
 - users should not need to manually set agent id, host name, local IP, or similar agent metadata for normal setup
-- if backend auto-discovery fails on a printer node, a manual backend URL may still be needed as a fallback
+- if backend auto-discovery fails on a printer node, you may need to set `BACKEND_URL` manually as a fallback
 - Windows printing currently uses the standard default print path
 
 ## Development
