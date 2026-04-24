@@ -103,6 +103,8 @@ git clone https://github.com/vimal-v-2006/printbridge
 cd printbridge
 ```
 
+**Windows only:** do **not** use the next command on Linux.
+
 ```powershell
 Set-ExecutionPolicy -Scope Process Bypass
 ```
@@ -185,6 +187,8 @@ git clone https://github.com/vimal-v-2006/printbridge
 ```powershell
 cd printbridge
 ```
+
+**Windows only:** do **not** use the next command on Linux.
 
 ```powershell
 Set-ExecutionPolicy -Scope Process Bypass
