@@ -85,6 +85,10 @@ This PC acts as the **host PC**.
 
 ### Important
 
+This firewall and port forwarding step is for **Windows host PCs only**.
+
+If you are using **Linux** as the host machine, you do **not** need these Windows `netsh` commands.
+
 On the **host Windows PC**, first open **PowerShell as Administrator**.
 
 This is needed for firewall and port forwarding commands.
