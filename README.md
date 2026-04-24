@@ -66,9 +66,10 @@ npm --version
 ## 1) Set up the host PC
 
 Use this section on the PC that:
-- does **not** need the printer connected
+- does **not** have the printer connected
+- wants to print through **another PC on the same local network** that **does** have the printer connected
 - will open the PrintBridge web UI
-- will send print jobs to another PC on the same local network
+- will send print jobs to that other printer PC over the local network
 
 ### Important
 
