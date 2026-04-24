@@ -162,6 +162,8 @@ Example:
 192.168.0.148
 ```
 
+**Note it down carefully.** You will use this same host IP in the next command when starting the printer node.
+
 If your host is Linux, run:
 
 ```bash
