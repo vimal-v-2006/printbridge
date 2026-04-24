@@ -104,6 +104,10 @@ cd printbridge
 ```
 
 ```powershell
+Set-ExecutionPolicy -Scope Process Bypass
+```
+
+```powershell
 npm install
 ```
 
