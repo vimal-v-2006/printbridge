@@ -156,21 +156,6 @@ http://localhost:5173
 
 This PC acts as the **printer node**.
 
-### Prerequisites for this printer PC
-
-Install **Node.js** if it is not already installed:
-- https://nodejs.org/
-
-Then verify:
-
-```powershell
-node --version
-```
-
-```powershell
-npm --version
-```
-
 ### Run the printer node
 
 ```powershell
