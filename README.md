@@ -182,6 +182,34 @@ npm install
 npm audit fix --force
 ```
 
+### First, find the host PC IP address
+
+On the **host Windows PC**:
+
+```powershell
+ipconfig
+```
+
+Use the active LAN IPv4 address, for example:
+
+```text
+192.168.0.148
+```
+
+On a **Linux host**, you can check with:
+
+```bash
+hostname -I
+```
+
+Then use that address with port `4000`.
+
+### Run the printer node
+
+```powershell
+$env:BACKEND_URL="http://192.168.0.148:4000"
+```
+
 ```powershell
 npm run dev:agent
 ```
@@ -191,7 +219,7 @@ npm run dev:agent
 - starts the Windows print agent
 - automatically sends the machine details the backend needs, such as host identity and local agent info
 - automatically discovers printers installed on that PC
-- automatically tries to discover and connect to the PrintBridge backend on the local network
+- connects to the backend URL you provide
 - registers that PC as a printer node
 - makes its printers available inside the web UI
 
@@ -215,7 +243,7 @@ The printer-host PC will receive the job and print it.
 
 - PrintBridge is designed for **local network use only**
 - users should not need to manually set agent id, host name, local IP, or similar agent metadata for normal setup
-- if backend auto-discovery fails on a printer node, you may need to set `BACKEND_URL` manually as a fallback
+- the recommended printer-node setup is to explicitly set `BACKEND_URL=http://<host-ip>:4000`
 - Windows printing currently uses the standard default print path
 
 ## Development
