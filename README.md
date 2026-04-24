@@ -179,12 +179,13 @@ npm audit fix --force
 ```
 
 ```powershell
-.\agent\start-agent-windows.ps1
+npm run dev:agent
 ```
 
 ### What this does
 
 - starts the Windows print agent
+- automatically sends the machine details the backend needs, such as host identity and local agent info
 - automatically discovers printers installed on that PC
 - automatically tries to connect to the PrintBridge backend on the local network
 - registers that PC as a printer node
@@ -209,7 +210,7 @@ The printer-host PC will receive the job and print it.
 ## Notes
 
 - PrintBridge is designed for **local network use only**
-- users should not need to manually set agent id, host name, or local IP for normal setup
+- users should not need to manually set agent id, host name, local IP, or similar agent metadata for normal setup
 - if backend auto-discovery fails on a printer node, a manual backend URL may still be needed as a fallback
 - Windows printing currently uses the standard default print path
 
