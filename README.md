@@ -60,37 +60,30 @@ Current limitation:
 
 # Installation for Windows
 
-## Important
+## Prerequisites
 
-On the **host Windows PC**, first open **PowerShell as Administrator**.
+Before using PrintBridge on Windows, install **Node.js** first.
 
-This is needed for firewall and port forwarding commands.
+Download it here:
+- https://nodejs.org/
 
-## 1) Allow backend access on the local network
-
-Run these commands on the **host PC**:
+After installing, verify:
 
 ```powershell
-netsh interface portproxy add v4tov4 listenaddress=0.0.0.0 listenport=4000 connectaddress=172.31.248.79 connectport=4000
+node --version
 ```
 
 ```powershell
-netsh advfirewall firewall add rule name="PrintBridge 4000" dir=in action=allow protocol=TCP localport=4000
+npm --version
 ```
-
-```powershell
-netsh interface portproxy show all
-```
-
-> If your backend is not running inside WSL, you may not need the `portproxy` command. The firewall rule is still useful.
 
 ---
 
-## 2) If your PC does **not** have a printer, and you want to print through another local PC that **does** have a printer
+## 1) If your PC does **not** have a printer, and you want to print through another local PC that **does** have a printer
 
 This PC acts as the **host PC**.
 
-### Install and run the host
+### Run the host
 
 ```powershell
 cd C:\Users\Public\printbridge
@@ -133,11 +126,48 @@ http://localhost:5173
 
 ---
 
-## 3) On the other Windows PC that **has the printer connected**
+## 2) On the other Windows PC that **has the printer connected**
 
 This PC acts as the **printer node**.
 
-Open PowerShell and run:
+### Prerequisites for this printer PC
+
+Install **Node.js** if it is not already installed:
+- https://nodejs.org/
+
+Then verify:
+
+```powershell
+node --version
+```
+
+```powershell
+npm --version
+```
+
+### Important
+
+On the **host Windows PC**, first open **PowerShell as Administrator**.
+
+This is needed for firewall and port forwarding commands.
+
+Run these commands on the **host PC**:
+
+```powershell
+netsh interface portproxy add v4tov4 listenaddress=0.0.0.0 listenport=4000 connectaddress=172.31.248.79 connectport=4000
+```
+
+```powershell
+netsh advfirewall firewall add rule name="PrintBridge 4000" dir=in action=allow protocol=TCP localport=4000
+```
+
+```powershell
+netsh interface portproxy show all
+```
+
+> If your backend is not running inside WSL, you may not need the `portproxy` command. The firewall rule is still useful.
+
+### Run the printer node
 
 ```powershell
 cd C:\Users\Public\printbridge
@@ -169,7 +199,7 @@ npm audit fix --force
 
 ---
 
-## 4) Using PrintBridge
+## 3) Using PrintBridge
 
 Once both sides are running:
 
