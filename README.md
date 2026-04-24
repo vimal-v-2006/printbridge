@@ -4,40 +4,35 @@ Print to printers on other PCs in your local network through a simple web app.
 
 ## About
 
-PrintBridge lets you use one machine as a clean web-based print control panel and other machines as printer nodes.
+PrintBridge is a local-network print bridge with a simple browser UI.
 
-In plain words:
-- open the web app
-- choose a printer from another PC on your LAN
-- upload a PDF
-- send the print job
-- let the printer-host PC handle the actual printing
+It lets you:
+- run a **host PC** with the web app and backend
+- run a **printer node PC** on a different machine that already has a printer installed
+- upload a PDF from the host PC
+- print it through the printer node PC
 
-This is useful when:
-- the printer is connected to a different PC
-- you want a simple browser UI instead of manually moving files around
-- multiple machines on the same local network need access to one or more printers
-- you want a lightweight local print bridge without exposing anything publicly
+## Core roles
 
-## How it works
+### Host PC
+The **host PC** is the machine that:
+- does **not** need to have a printer connected
+- runs the backend
+- runs the frontend
+- opens the PrintBridge web UI in the browser
 
-PrintBridge has 3 main parts:
-
-- **Frontend** — the web UI where you choose a printer and upload a PDF
-- **Backend** — the local network service that tracks agents, printers, uploads, and jobs
-- **Agent** — the small node that runs on the PC that has printer access
-
-Typical setup:
-- one **host PC** runs the backend and frontend
-- one or more **printer PCs** run the agent
-- all communication stays inside the **local network**
+### Printer node PC
+The **printer node PC** is the machine that:
+- **does** have the printer connected or installed
+- runs the PrintBridge agent
+- discovers local printers
+- receives and executes print jobs
 
 ## Current scope
 
 Working now:
-- local-network printer discovery
 - Windows printer agent support
-- Linux printer agent groundwork
+- local-network printer discovery
 - PDF upload and job creation
 - remote printer selection from the web UI
 - basic default printing
@@ -47,27 +42,16 @@ Working now:
 Current limitation:
 - custom page-range printing is not exposed yet because the current default print path does not enforce page ranges reliably across different PDF handlers
 
-## Project structure
-
-- `frontend/` — React + Vite web app
-- `backend/` — Fastify API and job routing
-- `agent/` — printer node agent
-- `shared/` — shared schemas and types
-- `docs/` — design and implementation notes
-- `infra/` — infra placeholders
-
 ---
 
 # Installation for Windows
 
 ## Prerequisites
 
-Before using PrintBridge on Windows, install **Node.js** first.
-
-Download it here:
+Install **Node.js** first:
 - https://nodejs.org/
 
-After installing, verify:
+Then verify:
 
 ```powershell
 node --version
@@ -79,21 +63,20 @@ npm --version
 
 ---
 
-## 1) If your PC does **not** have a printer, and you want to print through another local PC that **does** have a printer
+## 1) Set up the host PC
 
-This PC acts as the **host PC**.
+Use this section on the PC that:
+- does **not** need the printer connected
+- will open the PrintBridge web UI
+- will send print jobs to another PC on the same local network
 
 ### Important
 
 This firewall and port forwarding step is for **Windows host PCs only**.
 
-If you are using **Linux** as the host machine, you do **not** need these Windows `netsh` commands.
+If your host machine is **Linux**, do **not** use these Windows `netsh` commands.
 
-On the **host Windows PC**, first open **PowerShell as Administrator**.
-
-This is needed for firewall and port forwarding commands.
-
-Run these commands on the **host PC**:
+On the **host Windows PC**, open **PowerShell as Administrator** and run:
 
 ```powershell
 netsh interface portproxy add v4tov4 listenaddress=0.0.0.0 listenport=4000 connectaddress=172.31.248.79 connectport=4000
@@ -141,24 +124,50 @@ cd printbridge
 npm run dev:frontend
 ```
 
-Then open the web app:
+Then open:
 
 ```text
 http://localhost:5173
 ```
 
-### What this does
-
-- starts the backend on port `4000`
-- starts the frontend UI on port `5173`
-- lets other PCs on the same LAN connect as printer nodes
-- gives you a browser interface to choose a remote printer and send a print job
-
 ---
 
-## 2) On the other Windows PC that **has the printer connected**
+## 2) Set up the printer node PC
 
-This PC acts as the **printer node**.
+Use this section on the **other Windows PC** that:
+- **has the printer connected or installed**
+- will act as the print executor
+- will receive jobs from the host PC over the local network
+
+### Find the host PC IP address
+
+You need the IP address of the **host PC**, not the printer node PC.
+
+The **host PC** is the machine from section **1**, the one running:
+- `npm run dev:backend`
+- `npm run dev:frontend`
+
+On that **host Windows PC**, run:
+
+```powershell
+ipconfig
+```
+
+Look for the active LAN adapter and copy its **IPv4 Address**.
+
+Example:
+
+```text
+192.168.0.148
+```
+
+If your host is Linux, run:
+
+```bash
+hostname -I
+```
+
+Use that host IP with port `4000`.
 
 ### Run the printer node
 
@@ -182,50 +191,21 @@ npm install
 npm audit fix --force
 ```
 
-### First, find the host PC IP address
-
-On the **host Windows PC**:
-
 ```powershell
-ipconfig
-```
-
-Use the active LAN IPv4 address, for example:
-
-```text
-192.168.0.148
-```
-
-On a **Linux host**, you can check with:
-
-```bash
-hostname -I
-```
-
-Then use that address with port `4000`.
-
-### Run the printer node
-
-```powershell
-$env:BACKEND_URL="http://192.168.0.148:4000"
-```
-
-```powershell
-npm run dev:agent
+npm run dev:agent -- --backendUrl http://192.168.0.148:4000
 ```
 
 ### What this does
 
 - starts the Windows print agent
-- automatically sends the machine details the backend needs, such as host identity and local agent info
-- automatically discovers printers installed on that PC
-- connects to the backend URL you provide
+- discovers printers installed on that PC
+- connects to the host PC backend you specify
 - registers that PC as a printer node
 - makes its printers available inside the web UI
 
 ---
 
-## 3) Using PrintBridge
+## 3) Use PrintBridge
 
 Once both sides are running:
 
@@ -233,22 +213,18 @@ Once both sides are running:
 2. choose the printer node
 3. choose one of its printers
 4. upload a PDF
-5. click **Print PDF**
-
-The printer-host PC will receive the job and print it.
+5. set copies if needed
+6. click **Print PDF**
 
 ---
 
 ## Notes
 
-- PrintBridge is designed for **local network use only**
-- users should not need to manually set agent id, host name, local IP, or similar agent metadata for normal setup
-- the recommended printer-node setup is to explicitly set `BACKEND_URL=http://<host-ip>:4000`
+- PrintBridge is for **local network use only**
+- for printer nodes, the recommended setup is to explicitly pass the host backend URL
 - Windows printing currently uses the standard default print path
 
 ## Development
-
-From the project root:
 
 ```bash
 npm install
