@@ -205,7 +205,7 @@ npm run dev:agent -- --backendUrl http://<HOST-IP>:4000
 Example:
 
 ```powershell
-npm run dev:agent -- --backendUrl http://192.168.0.148:4000
+npm run dev:agent -- --backendUrl=http://192.168.0.148:4000
 ```
 
 ### What this does
@@ -213,6 +213,7 @@ npm run dev:agent -- --backendUrl http://192.168.0.148:4000
 - starts the Windows print agent
 - discovers printers installed on that PC
 - connects to the host PC backend you specify
+- if you still get a connection error, first make sure the backend is running and reachable from the printer node PC at `http://<HOST-IP>:4000/health`
 - registers that PC as a printer node
 - makes its printers available inside the web UI
 
