@@ -194,6 +194,16 @@ npm install
 npm audit fix --force
 ```
 
+**Use the host PC IP address that you noted in the previous step.**
+
+Syntax:
+
+```powershell
+npm run dev:agent -- --backendUrl http://<HOST-IP>:4000
+```
+
+Example:
+
 ```powershell
 npm run dev:agent -- --backendUrl http://192.168.0.148:4000
 ```
